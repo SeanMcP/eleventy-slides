@@ -1,0 +1,36 @@
+{% set slides = collections.slides | reverse %}
+
+<header class="slide-heading">
+    <i>{{ metadata.title }}</i>&nbsp;by
+    {{ metadata.author.name }}</header>
+
+<section class="slides-container">
+    {% for slide in slides %}
+        <article data-index="{{ loop.index }}" class="slide" id="{{ slide.fileSlug }}" {% if loop.index != 1 %} aria-hidden="true" hidden="true" {% else %} aria-current="true" {% endif %}>
+            {{ slide.templateContent | safe }}
+        </article>
+    {% endfor %}
+</section>
+
+<footer class="slide-controls">
+    <button aria-label="back one slide" data-slide-controls="button" data-direction="backward">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </button>
+    <progress data-slide-controls="progress" max="{{ collections.slides | length }}"></progress>
+    <select aria-label="Go to slide" data-slide-controls="select">
+        <option value="/">Title</option>
+        {% for slide in slides %}
+            <option value="#{{ slide.fileSlug }}">{{ loop.index }}</option>
+        {% endfor %}
+        <option value="/credits/">Credits</option>
+    </select>
+    <button aria-label="forward one slide" data-slide-controls="button" data-direction="forward">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </button>
+</footer>
+
+<script type="module" src="/static/slides.js"></script>
